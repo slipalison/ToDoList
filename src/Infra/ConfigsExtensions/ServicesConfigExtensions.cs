@@ -8,6 +8,6 @@ public static class ServicesConfigExtensions
 {
     public static void AddDomainServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IAccountPlanService, AccountPlanService>();
+        serviceCollection.AddScoped<IToDoListService, ToDoListService>();
     }
 }

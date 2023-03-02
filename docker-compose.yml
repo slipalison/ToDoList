@@ -1,23 +1,23 @@
 version: '3.4'
-
+# docker-compose up -d --no-deps --build <service_name>
 services:
-  webapi:
-    #image: ${DOCKER_REGISTRY-}webapi
-    build:
-      context: .
-      dockerfile: src/WebApi/Dockerfile
-    ports:
-      - "8080:80"
-      - "8085:443"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=uCondo;User Id=sa;Password=SqlServer2019!;Encrypt=False;
-    depends_on:
-     - sqlserver
-    #  - elasticsearch
-    #  - rabbit
-    #  - redis
-    #  - mongo
+  # webapi:
+  #   #image: ${DOCKER_REGISTRY-}webapi
+  #   build:
+  #     context: .
+  #     dockerfile: src/WebApi/Dockerfile
+  #   ports:
+  #     - "8080:80"
+  #     - "8085:443"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=ToDoList;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+  #   depends_on:
+  #    - sqlserver
+  #    - elasticsearch
+  #    - rabbit
+  #   #  - redis
+  #   #  - mongo
 
 
   sqlserver:
@@ -31,15 +31,15 @@ services:
  
   
 
-  # rabbit:
-  #   image: rabbitmq:3.11.9-management
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  # redis:
-  #   image: redis
-  #   ports:
-  #     - "6379:6379"
+  rabbit:
+    image: rabbitmq:3.11.9-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 
   # mongo:
   #   image: mongo
@@ -61,31 +61,31 @@ services:
 #open powershell
 #wsl -d docker-desktop
 #sysctl -w vm.max_map_count=262144
-  #elk:
+  # elk:
   #  image: sebp/elk:7.17.1
   #  ports:
   #   - "5601:5601"
   #   - "9200:9200"
   #   - "5044:5044"
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
-  #   ports:
-  #     - "9200:9200"
-  #     - "9300:9300"
-  #   networks:
-  #     - testes-elastic
-  #   environment:
-  #     discovery.type: single-node
-  #     ES_JAVA_OPTS: "-Xms1g -Xmx1g"
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.11.1
-  #   ports:
-  #     - "5601:5601"
-  #   networks:
-  #     - testes-elastic
-  #   depends_on:
-  #     - elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - testes-elastic
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    ports:
+      - "5601:5601"
+    networks:
+      - testes-elastic
+    depends_on:
+      - elasticsearch
 
 
   # grafana:
@@ -98,9 +98,9 @@ services:
   #   networks:
   #     - testes-elastic
 
-# networks: 
-#   testes-elastic:
-#     driver: bridge
+networks: 
+  testes-elastic:
+    driver: bridge
 
 # volumes:
 #   grafana_test_data: 

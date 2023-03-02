@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using Infra.Databases.SqlServers.UCondo;
+using Infra.Databases.SqlServers.ToDoListData;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -14,18 +14,19 @@ public class CustomWebApplicationFactory<TProgram>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
-        {        var dbContextDescriptor = services.SingleOrDefault(
-                         d => d.ServiceType ==
-                              typeof(DbContextOptions<UCondoContext>));
-         
-                     if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
-         
-                     var dbConnectionDescriptor = services.SingleOrDefault(
-                         d => d.ServiceType ==
-                              typeof(DbConnection));
-         
-                     if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
-    
+        {
+            var dbContextDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<ToDoListContext>));
+
+            if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
+
+            var dbConnectionDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbConnection));
+
+            if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
+
 
             services.AddSingleton<DbConnection>(container =>
             {
@@ -35,7 +36,7 @@ public class CustomWebApplicationFactory<TProgram>
                 return connection;
             });
 
-            services.AddDbContextPool<UCondoContext>((container, options) =>
+            services.AddDbContextPool<ToDoListContext>((container, options) =>
             {
                 var connection = container.GetRequiredService<DbConnection>();
                 options.UseSqlite(connection);

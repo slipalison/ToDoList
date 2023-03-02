@@ -1,11 +1,11 @@
 ﻿using Domain.Contracts.Repositories;
-using Infra.Databases.SqlServers.UCondo.Repositories;
+using Infra.Databases.SqlServers.ToDoListData.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infra.Databases.SqlServers.UCondo.Extensions;
+namespace Infra.Databases.SqlServers.ToDoListData.Extensions;
 
 public static class IncludeUCondoConnection
 {
@@ -13,7 +13,7 @@ public static class IncludeUCondoConnection
         IConfiguration configuration)
     {
         serviceCollection
-            .AddDbContextPool<UCondoContext>(options =>
+            .AddDbContextPool<ToDoListContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("SqlServer"))).AddRepositories();
 
         return serviceCollection;
@@ -21,13 +21,13 @@ public static class IncludeUCondoConnection
 
     private static void AddRepositories(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IAccountPlanRepository, AccountPlanRepository>();
+        serviceCollection.AddScoped<IToDoListRepository, ToDoListRepository>();
     }
 
     public static void ExecuteMigartions(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<UCondoContext>();
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<ToDoListContext>();
         dbContext.Database.EnsureCreated();
     }
 }

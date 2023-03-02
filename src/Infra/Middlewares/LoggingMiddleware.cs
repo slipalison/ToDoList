@@ -40,7 +40,9 @@ public class LoggingMiddleware
         await _next(context);
         context.Response.Body.Seek(0, SeekOrigin.Begin);
         _logger.LogInformation(
-            $"Http Response Information: {Environment.NewLine} Schema:{context.Request.Scheme} Host: {context.Request.Host} Path: {context.Request.Path} QueryString: {context.Request.QueryString}");
+            "Http Response Information | Schema:{RequestScheme} Host: {RequestHost} Path: {RequestPath} QueryString: {RequestQueryString} Headers: { Join }",
+            context.Request.Scheme, context.Request.Host, context.Request.Path, context.Request.QueryString,
+            string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")));
         await responseBody.CopyToAsync(originalBodyStream);
     }
 
@@ -50,7 +52,7 @@ public class LoggingMiddleware
         await using var requestStream = _recyclableMemoryStreamManager.GetStream();
         await context.Request.Body.CopyToAsync(requestStream);
         var log =
-            $"Http Request Information: {Environment.NewLine} Schema:{context.Request.Scheme} Host: {context.Request.Host} Path: {context.Request.Path} QueryString: {context.Request.QueryString}";
+            $"Http Request Information | Schema:{context.Request.Scheme} Host: {context.Request.Host} Path: {context.Request.Path} QueryString: {context.Request.QueryString}";
         _logger.LogInformation(log);
         context.Request.Body.Position = 0;
     }
