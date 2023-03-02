@@ -11,6 +11,9 @@
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.4" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+        <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.13" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
             <PrivateAssets>all</PrivateAssets>
@@ -21,7 +24,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.1" />
+        <PackageReference Include="Polly" Version="7.2.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,10 +43,6 @@
         <Reference Include="Microsoft.IO.RecyclableMemoryStream">
             <HintPath>C:\Users\aliso\.nuget\packages\microsoft.io.recyclablememorystream\2.3.1\lib\net5.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
         </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="MassTransitConfiguration" />
     </ItemGroup>
 
 </Project>

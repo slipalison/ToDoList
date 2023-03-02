@@ -50,7 +50,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseMiddleware<LoggingMiddleware>();
+        app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
         if (env.IsDevelopment())
             app.ExecuteMigartions();
 
