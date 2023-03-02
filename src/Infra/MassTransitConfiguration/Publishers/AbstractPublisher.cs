@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-namespace Infra.MassTransitConfiguration;
+namespace Infra.MassTransitConfiguration.Publishers;
 
 public abstract class AbstractPublisher<T> : IEventPublisher<T> where T : class, IEventBase
 {

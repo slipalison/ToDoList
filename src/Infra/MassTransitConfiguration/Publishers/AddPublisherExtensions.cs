@@ -2,7 +2,7 @@
 using MassTransit;
 using MassTransit.Transports.Fabric;
 
-namespace Infra.MassTransitConfiguration;
+namespace Infra.MassTransitConfiguration.Publishers;
 
 public static class AddPublisherExtensions
 {

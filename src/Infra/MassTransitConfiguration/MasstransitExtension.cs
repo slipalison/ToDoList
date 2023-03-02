@@ -19,8 +19,6 @@ public static class MasstransitExtension
         //services.AddScoped<>() consumer
 
         return services.AddToDoListHost(configuration);
-        
-        return services;
     }
 
     private static IServiceCollection AddToDoListHost(this IServiceCollection services, IConfiguration configuration)

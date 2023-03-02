@@ -12,6 +12,7 @@ services:
   #   environment:
   #     - ASPNETCORE_ENVIRONMENT=Development
   #     - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=ToDoList;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+  #     - RabbitMq__hosts=["rabbit:5672"]
   #   depends_on:
   #    - sqlserver
   #    - elasticsearch

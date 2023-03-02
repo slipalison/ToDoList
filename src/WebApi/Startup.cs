@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Domain.Contracts.Services;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.ToDoListData.Extensions;
+using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
@@ -42,7 +44,8 @@ public class Startup
                 }
             );
 
-        services
+        services.AddScoped<ICorrelationContextService, CorrelationContextService>();
+        services.AddMassTransitWithRabbitMq(_configuration)
             .HealthChecksConfiguration(_configuration)
             .AddUCondoContext(_configuration)
             .AddDomainServices();
