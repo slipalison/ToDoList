@@ -1,4 +1,8 @@
-﻿using MassTransit;
+﻿using Domain.Commands;
+using Domain.Contracts.Services;
+using Infra.MassTransitConfiguration.Consumers;
+using Infra.MassTransitConfiguration.Publishers;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,17 +20,20 @@ public static class MasstransitExtension
             options.StopTimeout = TimeSpan.FromMinutes(1);
         });
 
-        //services.AddScoped<>() consumer
-
-        return services.AddToDoListHost(configuration);
+        
+        return services.AddToDoListHost(configuration).AddScoped(typeof(IToDoListPublisher<>), typeof(ToDoListPublisher<>));
     }
 
     private static IServiceCollection AddToDoListHost(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>,ToDoConsumer>(); 
         return services.AddMassTransit<IToDoListBus>(cfg =>
         {
+            cfg.AddConsumer<ToDoConsumer, ToDoConsumerDefinition>();
+            
             cfg.UsingRabbitMq((context, configurator) =>
             {
+                configurator.AddFanOutPublisher<ToDoItemQueueCreateCommand>("Create.Exchange");
                 configurator.CopnfigurationRabbit(configuration);
                 configurator.ConfigureEndpoints(context);
             });

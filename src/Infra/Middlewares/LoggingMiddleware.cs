@@ -40,7 +40,7 @@ public class LoggingMiddleware
         await _next(context);
         context.Response.Body.Seek(0, SeekOrigin.Begin);
         _logger.LogInformation(
-            "Http Response Information | Schema:{RequestScheme} Host: {RequestHost} Path: {RequestPath} QueryString: {RequestQueryString} Headers: { Join }",
+            "Http Response Information | Schema:{RequestScheme} Host: {RequestHost} Path: {RequestPath} QueryString: {RequestQueryString} Headers: {Join}",
             context.Request.Scheme, context.Request.Host, context.Request.Path, context.Request.QueryString,
             string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")));
         await responseBody.CopyToAsync(originalBodyStream);

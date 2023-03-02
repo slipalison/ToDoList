@@ -1,4 +1,5 @@
 ﻿using Domain.Contracts.Services;
+using Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Polly;

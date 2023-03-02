@@ -4,6 +4,6 @@ namespace Domain.Contracts.Repositories;
 
 public interface IToDoListRepository
 {
-    Task<List<ToDoItemEntity>> GetAll();
-    Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity);
+    Task<List<ToDoItemEntity>> GetAll(CancellationToken cancellationToken = default);
+    Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity, CancellationToken cancellationToken = default);
 }

@@ -13,15 +13,15 @@ public class ToDoListRepository : IToDoListRepository
         _context = toDoListContext;
     }
 
-    public Task<List<ToDoItemEntity>> GetAll()
+    public Task<List<ToDoItemEntity>> GetAll(CancellationToken cancellationToken = default)
     {
-        return _context.AccountPlanEntities.ToListAsync();
+        return _context.AccountPlanEntities.ToListAsync(cancellationToken);
     }
 
-    public async Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity)
+    public async Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity, CancellationToken cancellationToken = default)
     {
-        var ent = await _context.AddAsync(accountPlanEntity);
-        await _context.SaveChangesAsync();
+        var ent = await _context.AddAsync(accountPlanEntity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return ent.Entity;
     }
