@@ -1,4 +1,6 @@
-﻿namespace Domain.ToDoItems;
+﻿using Domain.Commands;
+
+namespace Domain.ToDoItems;
 
 public class ToDoItemEntity
 {
@@ -14,6 +16,14 @@ public class ToDoItemEntity
         return new()
         {
             Name = name, Deadline = deadline, Status = Status.ToDo
+        };
+    }
+    
+    public static ToDoItemEntity Update(UpdateCommad updateCommad, Guid id)
+    {
+        return new()
+        {
+            Name = updateCommad.Name, Deadline = updateCommad.Deadline, Status = updateCommad.Status, Id = id
         };
     }
 }

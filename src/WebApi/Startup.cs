@@ -8,6 +8,7 @@ using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace WebApi;
 
@@ -56,6 +57,7 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
+        app.UseSerilogRequestLogging();
         if (env.IsDevelopment())
             app.ExecuteMigartions();
 

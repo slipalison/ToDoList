@@ -12,7 +12,7 @@ public class ToDoListContext : DbContext
     {
     }
 
-    public DbSet<ToDoItemEntity> AccountPlanEntities { get; set; }
+    public DbSet<ToDoItemEntity> ToDos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
