@@ -31,6 +31,10 @@ public class Startup
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
+        services.AddCors(policyBuilder =>
+            policyBuilder.AddDefaultPolicy(policy =>
+                policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+        );
 
         services.AddResponseCompression(options =>
         {
@@ -56,6 +60,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseCors();
         app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
         app.UseSerilogRequestLogging();
         if (env.IsDevelopment())

@@ -1,24 +1,24 @@
 version: '3.4'
 # docker-compose up -d --no-deps --build <service_name>
 services:
-  # webapi:
-  #   #image: ${DOCKER_REGISTRY-}webapi
-  #   build:
-  #     context: .
-  #     dockerfile: src/WebApi/Dockerfile
-  #   ports:
-  #     - "8080:80"
-  #     - "8085:443"
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=ToDoList;User Id=sa;Password=SqlServer2019!;Encrypt=False;
-  #     - RabbitMq__hosts=["rabbit:5672"]
-  #   depends_on:
-  #    - sqlserver
-  #    - elasticsearch
-  #    - rabbit
-  #   #  - redis
-  #   #  - mongo
+  webapi:
+    #image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    ports:
+      - "8080:80"
+      - "8085:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=ToDoList;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+      - RabbitMq__hosts=["rabbit:5672"]
+    depends_on:
+     - sqlserver
+     - elasticsearch
+     - rabbit
+    #  - redis
+    #  - mongo
 
 
   sqlserver:
