@@ -1,8 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-image: linear-gradient(to right top, #6b74d1, #6e7ed6, #7188db, #7691df, #7c9be3, #74a7ec, #6db3f3, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
-  }
+  background-image: linear-gradient(to right, #940bff, #8030ff, #6b42ff, #554efd, #3d57fa, #106eff, #0082ff, #0093ff, #00b2ff, #00cdff, #00e5fd, #5ffbf1);
+}
 
-  #content{
-    background-color: #ffffff;
-  }
+#content {
+  background-color: #ffffff;
+}
+
+.hiden {
+  display: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  margin: 3px;
+}
+
+td {
+  vertical-align: middle;
+}

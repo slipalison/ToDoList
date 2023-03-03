@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Task } from '../Entities/task';
+import { ITask, Task } from '../Entities/task';
 
 
 @Component({
@@ -31,21 +31,24 @@ export class AppComponent implements OnInit {
   }
 
   listTodo() {
-    var data = this.http.get<Task[]>('http://localhost:8080/ToDo');
-    data.subscribe((result: Task[]) => {
+    var data = this.http.get<ITask[]>('http://localhost:8080/ToDo');
+    data.subscribe((result: ITask[]) => {
       this.tasks = result;
     });
   }
 
-  addTodo(result: Task) {
+  addTodo(result: ITask) {
     var data = this.http.post('http://localhost:8080/ToDo', result);
 
     data.subscribe((result: any) => {
       console.log("Adicionado a fila");
+
+      this.listTodo();
     });
   }
 
-  updateTodo(result: Task) {
+  updateTodo(result: ITask, status: string) {
+    result.status = status;
     var data = this.http.patch(`http://localhost:8080/ToDo/${result.id}`, result);
 
     data.subscribe((result: any) => {
@@ -54,31 +57,39 @@ export class AppComponent implements OnInit {
   }
 
 
-  deleteTodo(result: Task) {
+  deleteTodo(result: ITask) {
     var data = this.http.delete(`http://localhost:8080/ToDo/${result.id}`);
 
     data.subscribe((result: any) => {
       console.log("Deletado", result);
+      this.listTodo();
     });
   }
 
   newTask: string = '';
-  tasks: Task[] = [];
+  tasks: ITask[] = [];
 
 
   addTask() {
 
     console.log(this.form.value);
 
-    if (this.newTask.length > 0) {
-      //this.tasks.push(this.newTask);
-      this.newTask = '';
+    let task: ITask = new Task();
+
+
+    task.name = this.form.controls["name"].value;
+    if (this.form.controls["deadline"].value !== '')
+      task.deadline = this.form.controls["deadline"].value;
+
+    console.log(this.form.controls["name"].valid)
+    if (this.form.controls["name"].valid) {
+      this.addTodo(task);
     }
 
     this.form.reset()
   }
 
-  removeTask(task: Task) {
+  removeTask(task: ITask) {
     const index = this.tasks.indexOf(task);
     if (index >= 0) {
       this.tasks.splice(index, 1);

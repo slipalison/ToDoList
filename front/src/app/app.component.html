@@ -1,9 +1,17 @@
 <div class="input-group mb-3">
+  <!-- Componente1 -->
   <form [formGroup]="form" class="input-group mb-3">
-    <input type="text" formControlName="name" class="form-control" id="name" (keyup.enter)="addTask()"
-      placeholder="Nome da Tarefa" />
+    <input type="text" formControlName="name" class="form-control"
+      [ngClass]="{'is-invalid':  ((form.controls['name'].value !==null &&form.controls['name'].value !=='') && !form.valid)   }"
+      id="name" (keyup.enter)="addTask()" placeholder="Nome da Tarefa" />
     <input type="date" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()" />
-    <button class="btn btn-outline-info text-primary" type="button" id="button-addon2" name="add" (click)="addTask()">Adicionar</button>
+
+    <button class="btn btn-outline-info text-primary" type="button" id="button-addon2" name="add"
+      (click)="addTask()">Adicionar</button>
+    <div id="validationServerUsernameFeedback" class="invalid-feedback"
+      [ngClass]="{'hiden': ((form.controls['name'].value !==null &&form.controls['name'].value !=='') && !form.valid)   }">
+      O valor deve conter entre 3 e 60 letras
+    </div>
   </form>
 </div>
 
@@ -14,25 +22,36 @@
 
   <table class="table table-hover ">
     <thead>
-      <th scope="col"></th>
+      <th scope="col">Compromisso</th>
+      <th scope="col">Data limite</th>
       <th scope="col"></th>
       <th scope="col"></th>
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td class="col-md-4">{{ task.name }}</td>
-        <td class="col-md-4">{{ task.deadline | date:'dd/MM/yyyy' }}</td>
-        <td class="col-md-4" style="text-align: end;">
+        <td class="col-sm-5">{{ task.name }} <i class="bi bi-pencil-square"></i></td>
+        <td class="col-sm-1">{{ task.deadline | date:'dd/MM/yyyy' }} <i class="bi bi-pencil-square"></i></td>
+        <td class="col-sm-1">
+          <a class="pointer hiden">💾</a>
+          <a class="pointer">📝</a>
+          <a class="pointer" (click)="deleteTodo(task)">🗑</a>
+        </td>
+        <td class="col-sm-5" style="text-align: end;">
           <div class="btn-group">
-            <a href="#" class="btn btn-primary" [ngClass]="{'active': task.status == 'ToDo' }" (click)="updateTodo(task)">A fazer</a>
-            <a href="#" class="btn btn-primary" [ngClass]="{'btn-warning active': task.status == 'InProgress' }" (click)="updateTodo(task)">Em Progresso</a>
-            <a href="#" class="btn btn-primary" [ngClass]="{'btn-success active': task.status == 'Done' }" (click)="updateTodo(task)">Terminada</a>
+            <button class="btn btn-primary" [ngClass]="{'active': task.status === 'ToDo' }"
+              (click)="updateTodo(task, 'ToDo')">A fazer</button>
+            <button class="btn btn-primary" [ngClass]="{'btn-warning active': task.status === 'InProgress' }"
+              (click)="updateTodo(task, 'InProgress')">Em Progresso</button>
+            <button class="btn btn-primary" [ngClass]="{'btn-success active': task.status === 'Done' }"
+              (click)="updateTodo(task, 'Done')">Terminada</button>
           </div>
 
         </td>
+
       </tr>
     </tbody>
   </table>
+
 
 
 </div>
