@@ -16,12 +16,28 @@
 </div>
 
 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3">
+      <label for="select">Filtrar por:</label>
+      <select class="form-select" id="select" [(ngModel)]="filterValue">
+        <option selected value="ToDo">A Fazer</option>
+        <option value="InProgress">Em Andamento</option>
+        <option value="Done">Terminada</option>
+        <option value="All">Todos</option>
+      </select>
+    </div>
+  </div>
+</div>
 
 <div id="list">
 
 
 
- <table class="table table-hover ">
+  <table class="table table-hover ">
     <thead>
       <th scope="col">Compromisso</th>
       <th scope="col">Data limite</th>
@@ -29,7 +45,7 @@
       <th scope="col"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let task of tasks">
+      <tr *ngFor="let task of filterList()">
         <td class="col-sm-5">{{ task.name }} <i class="bi bi-pencil-square"></i></td>
         <td class="col-sm-1">{{ task.deadline | date:'dd/MM/yyyy' }} <i class="bi bi-pencil-square"></i></td>
         <td class="col-sm-1">
@@ -42,7 +58,7 @@
             <button class="btn btn-primary" [ngClass]="{'active': task.status === 'ToDo' }"
               (click)="updateTodo(task, 'ToDo')">A fazer</button>
             <button class="btn btn-primary" [ngClass]="{'btn-warning active': task.status === 'InProgress' }"
-              (click)="updateTodo(task, 'InProgress')">Em Progresso</button>
+              (click)="updateTodo(task, 'InProgress')">Em Andamento</button>
             <button class="btn btn-primary" [ngClass]="{'btn-success active': task.status === 'Done' }"
               (click)="updateTodo(task, 'Done')">Terminada</button>
           </div>

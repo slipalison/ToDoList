@@ -10,9 +10,11 @@ import { ITask, Task } from './todos/entities/task';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
-
   public form: FormGroup;
+  tasks: Task[] = [];
+  filterValue: string = 'All';
+
+
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.form = this.fb.group({
       name: ['', Validators.compose([
@@ -22,8 +24,6 @@ export class AppComponent implements OnInit {
       ])],
       deadline: ['']
     });
-
-
   }
 
   ngOnInit(): void {
@@ -39,9 +39,7 @@ export class AppComponent implements OnInit {
 
   addTodo(result: Task) {
     var data = this.http.post('http://localhost:8080/ToDo', result);
-
     data.subscribe((result: any) => {
-
       console.log("Adicionado a fila");
     });
   }
@@ -50,7 +48,6 @@ export class AppComponent implements OnInit {
 
     result.status = status;
     var data = this.http.patch(`http://localhost:8080/ToDo/${result.id}`, result);
-
     data.subscribe((result: any) => {
       this.listTodo();
       console.log("Atualizado ", result);
@@ -67,9 +64,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  newTask: string = '';
-  tasks: Task[] = [];
-
+  filterList() {
+    if(this.filterValue == 'All')
+    return this.tasks
+    else
+    return this.tasks.filter(x=> x.status == this.filterValue)
+  }
 
   addTask() {
     let name = this.form.controls["name"];
@@ -89,8 +89,6 @@ export class AppComponent implements OnInit {
       this.listTodo();
       this.form.reset();
     });
-
-
   }
 
   removeTask(task: Task) {
