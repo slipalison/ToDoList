@@ -33,7 +33,7 @@ public class Startup
 
         services.AddCors(policyBuilder =>
             policyBuilder.AddDefaultPolicy(policy =>
-                policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+                policy.AllowAnyHeader().AllowAnyHeader())
         );
 
         services.AddResponseCompression(options =>
@@ -60,7 +60,10 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseCors();
+        app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
         app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
         app.UseSerilogRequestLogging();
         if (env.IsDevelopment())

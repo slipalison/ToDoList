@@ -3,7 +3,7 @@
     <input type="text" formControlName="name" class="form-control" id="name" (keyup.enter)="addTask()"
       placeholder="Nome da Tarefa" />
     <input type="date" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()" />
-    <button class="btn btn-info " type="button" id="button-addon2" name="add" (click)="addTask()">Adicionar</button>
+    <button class="btn btn-outline-info text-primary" type="button" id="button-addon2" name="add" (click)="addTask()">Adicionar</button>
   </form>
 </div>
 
@@ -24,9 +24,9 @@
         <td class="col-md-4">{{ task.deadline | date:'dd/MM/yyyy' }}</td>
         <td class="col-md-4" style="text-align: end;">
           <div class="btn-group">
-            <a href="#" class="btn btn-primary" [ngClass]="{'active': task.status == 'ToDo' }">A fazer</a>
-            <a href="#" class="btn btn-primary" [ngClass]="{'active': task.status == 'InProgress' }">Em Progresso</a>
-            <a href="#" class="btn btn-primary" [ngClass]="{'active': task.status == 'Done' }">Terminada</a>
+            <a href="#" class="btn btn-primary" [ngClass]="{'active': task.status == 'ToDo' }" (click)="updateTodo(task)">A fazer</a>
+            <a href="#" class="btn btn-primary" [ngClass]="{'btn-warning active': task.status == 'InProgress' }" (click)="updateTodo(task)">Em Progresso</a>
+            <a href="#" class="btn btn-primary" [ngClass]="{'btn-success active': task.status == 'Done' }" (click)="updateTodo(task)">Terminada</a>
           </div>
 
         </td>
