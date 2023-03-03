@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ITask, Task } from '../Entities/task';
+import { ITask, Task } from './todos/entities/task';
 
 
 @Component({
@@ -31,69 +31,72 @@ export class AppComponent implements OnInit {
   }
 
   listTodo() {
-    var data = this.http.get<ITask[]>('http://localhost:8080/ToDo');
-    data.subscribe((result: ITask[]) => {
+    var data = this.http.get<Task[]>('http://localhost:8080/ToDo');
+    data.subscribe((result: Task[]) => {
       this.tasks = result;
     });
   }
 
-  addTodo(result: ITask) {
+  addTodo(result: Task) {
     var data = this.http.post('http://localhost:8080/ToDo', result);
 
     data.subscribe((result: any) => {
-      console.log("Adicionado a fila");
 
-      this.listTodo();
+      console.log("Adicionado a fila");
     });
   }
 
-  updateTodo(result: ITask, status: string) {
+  updateTodo(result: Task, status: string) {
+
     result.status = status;
     var data = this.http.patch(`http://localhost:8080/ToDo/${result.id}`, result);
 
     data.subscribe((result: any) => {
+      this.listTodo();
       console.log("Atualizado ", result);
     });
   }
 
 
-  deleteTodo(result: ITask) {
+  deleteTodo(result: Task) {
     var data = this.http.delete(`http://localhost:8080/ToDo/${result.id}`);
 
     data.subscribe((result: any) => {
-      console.log("Deletado", result);
       this.listTodo();
+      console.log("Deletado", result);
     });
   }
 
   newTask: string = '';
-  tasks: ITask[] = [];
+  tasks: Task[] = [];
 
 
   addTask() {
+    let name = this.form.controls["name"];
+    let deadline = this.form.controls["deadline"];
 
-    console.log(this.form.value);
+    if (!name.valid) return;
 
     let task: ITask = new Task();
+    task.name = name.value;
+
+    if (deadline.value != null && deadline.value != '')
+      task.deadline = deadline.value
 
 
-    task.name = this.form.controls["name"].value;
-    if (this.form.controls["deadline"].value !== '')
-      task.deadline = this.form.controls["deadline"].value;
+    var data = this.http.post('http://localhost:8080/ToDo', task);
+    data.subscribe((result: any) => {
+      this.listTodo();
+      this.form.reset();
+    });
 
-    console.log(this.form.controls["name"].valid)
-    if (this.form.controls["name"].valid) {
-      this.addTodo(task);
-    }
 
-    this.form.reset()
   }
 
-  removeTask(task: ITask) {
+  removeTask(task: Task) {
     const index = this.tasks.indexOf(task);
     if (index >= 0) {
       this.tasks.splice(index, 1);
     }
   }
 }
-

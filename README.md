@@ -15,15 +15,16 @@ O docker-compose, irá subir um sql server, e uma Web API. A aplicação irá cr
 
 ## A API
 
-1. Projeto com prazo de 1 semana:
-   a. Construir uma app para cadastro e consulta de tarefas (descrição/data/status).
-   b. Arquitetura, página em Angular + API + Worker com comunicação via RabbitMQ
-   em .Net6 C#.
-   c. Itens relevantes:
-   i. Ter logs para suporte da aplicação.
-   ii. Aplicação de design patterns.
-   iii. Utilização de framework de persistência.
-   iv. Banco de dados livre.
+Projeto com prazo de 1 semana:
+
+      a. Construir uma app para cadastro e consulta de tarefas (descrição/data/status).
+      b. Arquitetura, página em Angular + API + Worker com comunicação via RabbitMQ
+      em .Net6 C#.
+      c. Itens relevantes:
+      i. Ter logs para suporte da aplicação.
+      ii. Aplicação de design patterns.
+      iii. Utilização de framework de persistência.
+      iv. Banco de dados livre.
 
 2. Entrevista para que o candidato faça uma defesa do código, demostre como foi feito e
    responda as dúvidas dos entrevistadores.

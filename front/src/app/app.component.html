@@ -1,5 +1,5 @@
 <div class="input-group mb-3">
-  <!-- Componente1 -->
+
   <form [formGroup]="form" class="input-group mb-3">
     <input type="text" formControlName="name" class="form-control"
       [ngClass]="{'is-invalid':  ((form.controls['name'].value !==null &&form.controls['name'].value !=='') && !form.valid)   }"
@@ -16,11 +16,12 @@
 </div>
 
 
+
 <div id="list">
 
 
 
-  <table class="table table-hover ">
+ <table class="table table-hover ">
     <thead>
       <th scope="col">Compromisso</th>
       <th scope="col">Data limite</th>
@@ -33,7 +34,7 @@
         <td class="col-sm-1">{{ task.deadline | date:'dd/MM/yyyy' }} <i class="bi bi-pencil-square"></i></td>
         <td class="col-sm-1">
           <a class="pointer hiden">💾</a>
-          <a class="pointer">📝</a>
+          <a class="pointer hiden">📝</a>
           <a class="pointer" (click)="deleteTodo(task)">🗑</a>
         </td>
         <td class="col-sm-5" style="text-align: end;">
@@ -51,7 +52,5 @@
       </tr>
     </tbody>
   </table>
-
-
 
 </div>
