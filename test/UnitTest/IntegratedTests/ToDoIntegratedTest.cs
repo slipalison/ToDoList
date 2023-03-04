@@ -14,7 +14,7 @@ public class WorkFlowIntegratedTest : AbstractIntegratedTest
     [Fact]
     public async Task GetAll()
     {
-        var t = await CallHttp("/").GetAsync().ReceiveResult<List<ToDoItemEntity>>();
+        var t = await CallHttp("/Todo").GetAsync().ReceiveResult<List<ToDoItemEntity>>();
 
         Assert.True(t.IsSuccess);
         Assert.NotEmpty(t.Value);

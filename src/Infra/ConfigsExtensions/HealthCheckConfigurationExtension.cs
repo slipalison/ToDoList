@@ -23,6 +23,7 @@ public static class HealthCheckConfigurationExtension
                 Predicate = r => r.Tags.Contains("readiness"),
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
+        
     }
 
     public static IServiceCollection HealthChecksConfiguration(this IServiceCollection services,
@@ -39,7 +40,8 @@ public static class HealthCheckConfigurationExtension
                 () => HealthCheckResult.Healthy())
             .AddSqlServer(
                 configuration.GetConnectionString("SqlServer")!,
-                tags: new[] { "Sql Server", "readiness" });
+                tags: new[] { "Sql Server", "readiness" })
+            .AddRabbitMQ();
 
 
         return services;

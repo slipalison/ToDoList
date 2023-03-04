@@ -6,6 +6,7 @@ using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.ToDoListData.Extensions;
 using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -73,7 +74,10 @@ public class Startup
         app.UseSwaggerUI();
         app.UseHttpsRedirection().UseRouting()
             .UseResponseCompression()
-            .UseEndpoints(builder => { builder.MapControllers(); })
+            .UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            })
             .UseAuthorization()
             .HealthCheckConfiguration();
     }

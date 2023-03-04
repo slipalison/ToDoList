@@ -1,4 +1,5 @@
-﻿using Domain.Commands;
+﻿using System.Text.Json;
+using Domain.Commands;
 using Domain.Contracts.Services;
 using Infra.MassTransitConfiguration.Consumers;
 using Infra.MassTransitConfiguration.Publishers;
@@ -29,10 +30,13 @@ public static class MasstransitExtension
         services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>,ToDoConsumer>(); 
         return services.AddMassTransit<IToDoListBus>(cfg =>
         {
+            
             cfg.AddConsumer<ToDoConsumer, ToDoConsumerDefinition>();
             
             cfg.UsingRabbitMq((context, configurator) =>
             {
+                
+                
                 configurator.AddFanOutPublisher<ToDoItemQueueCreateCommand>("Create.Exchange");
                 configurator.CopnfigurationRabbit(configuration);
                 configurator.ConfigureEndpoints(context);
@@ -46,10 +50,12 @@ public static class MasstransitExtension
         var pass = configuration["RabbitMq:password"];
         var user = configuration["RabbitMq:user"];
 
-        var hosts = new List<string>();
-        configuration.GetSection("RabbitMq:hosts").Bind(hosts);
+        Console.WriteLine("Value: " + configuration.GetSection("RabbitMq:hosts").Value);
+        var hosts = 
+        JsonSerializer.Deserialize<List<string>>(configuration.GetSection("RabbitMq:hosts").Value!);
 
         var maimHost = hosts.First().Split(":");
+        
         
         cfg.Host(maimHost[0], ushort.Parse(maimHost[1]), "/", (hostCongig) =>
         {

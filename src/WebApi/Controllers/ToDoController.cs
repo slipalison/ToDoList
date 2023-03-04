@@ -29,6 +29,9 @@ public class ToDoController : ControllerBase
     public async Task<IActionResult> Create([FromBody] ToDoItemCreateCommand createCommand,
         CancellationToken cancellationToken = default)
     {
+        if (!createCommand.Validate().IsSuccess)
+            return BadRequest(createCommand.Validate().Error);
+        
         await _toDoListService.Create(createCommand, cancellationToken);
         return Ok();
     }
@@ -37,6 +40,9 @@ public class ToDoController : ControllerBase
     public async Task<IActionResult> CreateWithQueue([FromBody] ToDoItemCreateCommand createCommand,
         CancellationToken cancellationToken = default)
     {
+        if (!createCommand.Validate().IsSuccess)
+            return BadRequest(createCommand.Validate().Error);
+
         await _toDoListService.CreateWithQueue(createCommand, cancellationToken);
         _logger.LogInformation("Registor enviado para cadastro");
         return Ok();
@@ -46,13 +52,17 @@ public class ToDoController : ControllerBase
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCommad updateCommad,
         CancellationToken cancellationToken = default)
     {
+        
+        if (!updateCommad.Validate().IsSuccess)
+            return BadRequest(updateCommad.Validate().Error);
+        
         var result = await _toDoListService.Update(id, updateCommad, cancellationToken);
         if (result.IsSuccess)
             return Ok();
         _logger.LogInformation("Registor atulalizado");
         return BadRequest(result.Error);
     }
-    
+
     [HttpDelete("{id:Guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
