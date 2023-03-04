@@ -1,39 +1,37 @@
 ﻿using System.Data.Common;
 using Infra.Databases.SqlServers.ToDoListData;
 using Infra.MassTransitConfiguration;
+using Infra.MassTransitConfiguration.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MassTransit.Testing;
 using NSubstitute;
 
 
 namespace UnitTest.IntegratedTests;
+
 
 public class CustomWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram> where TProgram : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        var harness = new InMemoryTestHarness($"loopback://localhost:5672/");
-        harness.Start().GetAwaiter().GetResult();
-
-
-        var bus = Bus.Factory.CreateUsingInMemory(cfg => { });
-
-
         builder.ConfigureServices(services =>
         {
-            services.AddSingleton<IBus>(bus);
+            services.AddMassTransitTestHarness(cfg =>
+            {
+                cfg.AddConsumer<ToDoConsumer, ToDoConsumerDefinition>();
+            });
 
-            services.AddScoped<IToDoListBus>(x => Substitute.For<IToDoListBus>());
-
+            services.AddScoped<IToDoListBus>(x=>Substitute.For<IToDoListBus>());
             MockInMemoryDatabase(services);
         });
-
+        
+        //app.ApplicationServices.GetRequiredService<ITestHarness>().Start();
+        
         builder.UseEnvironment("Test");
     }
 
@@ -64,8 +62,6 @@ public class CustomWebApplicationFactory<TProgram>
         {
             var connection = container.GetRequiredService<DbConnection>();
             options.UseSqlite(connection);
-            
-            
         });
     }
 }

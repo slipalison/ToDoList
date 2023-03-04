@@ -1,10 +1,12 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
 using MassTransit;
 using MassTransit.Serialization;
 using Microsoft.Extensions.Logging;
 
 namespace Infra.MassTransitConfiguration.Consumers;
 
+[ExcludeFromCodeCoverage]
 internal class ApplicatrionJsonDeserialize :  SystemTextJsonRawMessageSerializer, IMessageSerializer,
     IMessageDeserializer
 {

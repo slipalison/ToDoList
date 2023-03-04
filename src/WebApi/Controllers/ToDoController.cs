@@ -31,9 +31,9 @@ public class ToDoController : ControllerBase
     {
         if (!createCommand.Validate().IsSuccess)
             return BadRequest(createCommand.Validate().Error);
-        
-        await _toDoListService.Create(createCommand, cancellationToken);
-        return Ok();
+
+        var result = await _toDoListService.Create(createCommand, cancellationToken);
+        return Ok(result);
     }
 
     [HttpPost("queue")]
@@ -52,10 +52,9 @@ public class ToDoController : ControllerBase
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCommad updateCommad,
         CancellationToken cancellationToken = default)
     {
-        
         if (!updateCommad.Validate().IsSuccess)
             return BadRequest(updateCommad.Validate().Error);
-        
+
         var result = await _toDoListService.Update(id, updateCommad, cancellationToken);
         if (result.IsSuccess)
             return Ok();

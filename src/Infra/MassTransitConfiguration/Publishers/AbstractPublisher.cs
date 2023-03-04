@@ -36,12 +36,11 @@ public abstract class AbstractPublisher<T> : IEventPublisher<T> where T : class,
         {
             return _retry.ExecuteAsync(async () =>
             {
-                using var source = new CancellationTokenSource(TimeSpan.FromSeconds(30000));
                 await _bus.Publish(@event, x =>
                 {
                     x.SetRoutingKey(@event.RoutingKey);
                     x.CorrelationId = correlationId;
-                }, cancellationToken: source.Token);
+                });
             });
         }
         catch (Exception e)

@@ -6,7 +6,6 @@ using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.ToDoListData.Extensions;
 using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -67,8 +66,8 @@ public class Startup
             .AllowAnyHeader());
         app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
         app.UseSerilogRequestLogging();
-        if (env.IsDevelopment())
-            app.ExecuteMigartions();
+        // TODO: Isso é só para testes e apresentação, hambiente produtivo isso é contra indicado
+        app.ExecuteMigartions();
 
         app.UseSwagger();
         app.UseSwaggerUI();

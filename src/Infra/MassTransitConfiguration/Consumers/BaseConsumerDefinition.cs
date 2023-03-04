@@ -1,9 +1,10 @@
-﻿using MassTransit;
+﻿using System.Diagnostics.CodeAnalysis;
+using MassTransit;
 using MassTransit.Serialization;
 using Microsoft.Extensions.Logging;
 
 namespace Infra.MassTransitConfiguration.Consumers;
-
+[ExcludeFromCodeCoverage]
 public abstract class BaseConsumerDefinition<TConsumer> : ConsumerDefinition<TConsumer>
     where TConsumer : class, IConsumer
 {
