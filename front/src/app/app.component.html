@@ -4,7 +4,7 @@
     <input type="text" formControlName="name" class="form-control"
       [ngClass]="{'is-invalid':  ((form.controls['name'].value !==null &&form.controls['name'].value !=='') && !form.valid)   }"
       id="name" (keyup.enter)="addTask()" placeholder="Nome da Tarefa" />
-    <input type="date" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()" />
+    <input type="date" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()"  min="{{ today | date:'yyyy-MM-dd' }}"/>
 
     <button class="btn btn-outline-info text-primary" type="button" id="button-addon2" name="add"
       (click)="addTask()">Adicionar</button>
