@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MassTransit.Testing;
+using NSubstitute;
 
 
 namespace UnitTest.IntegratedTests;
@@ -17,51 +18,54 @@ public class CustomWebApplicationFactory<TProgram>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        
         var harness = new InMemoryTestHarness($"loopback://localhost:5672/");
         harness.Start().GetAwaiter().GetResult();
-        
-        
-        var bus = Bus.Factory.CreateUsingInMemory(cfg =>
-        {
-         
-        });
-        
-      
-        
+
+
+        var bus = Bus.Factory.CreateUsingInMemory(cfg => { });
+
+
         builder.ConfigureServices(services =>
         {
             services.AddSingleton<IBus>(bus);
-            
-            
-            var dbContextDescriptor = services.SingleOrDefault(
-                d => d.ServiceType ==
-                     typeof(DbContextOptions<ToDoListContext>));
 
-            if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
+            services.AddScoped<IToDoListBus>(x => Substitute.For<IToDoListBus>());
 
-            var dbConnectionDescriptor = services.SingleOrDefault(
-                d => d.ServiceType ==
-                     typeof(DbConnection));
-
-            if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
-
-
-            services.AddSingleton<DbConnection>(container =>
-            {
-                var connection = new SqliteConnection("Data Source=:memory:");
-                connection.Open();
-
-                return connection;
-            });
-
-            services.AddDbContextPool<ToDoListContext>((container, options) =>
-            {
-                var connection = container.GetRequiredService<DbConnection>();
-                options.UseSqlite(connection);
-            });
+            MockInMemoryDatabase(services);
         });
 
         builder.UseEnvironment("Test");
+    }
+
+    private static void MockInMemoryDatabase(IServiceCollection services)
+    {
+        var dbContextDescriptor = services.SingleOrDefault(
+            d => d.ServiceType ==
+                 typeof(DbContextOptions<ToDoListContext>));
+
+        if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
+
+        var dbConnectionDescriptor = services.SingleOrDefault(
+            d => d.ServiceType ==
+                 typeof(DbConnection));
+
+        if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
+
+
+        services.AddSingleton<DbConnection>(container =>
+        {
+            var connection = new SqliteConnection("Data Source=:memory:");
+            connection.Open();
+
+            return connection;
+        });
+
+        services.AddDbContextPool<ToDoListContext>((container, options) =>
+        {
+            var connection = container.GetRequiredService<DbConnection>();
+            options.UseSqlite(connection);
+            
+            
+        });
     }
 }

@@ -27,7 +27,11 @@ public static class MasstransitExtension
 
     private static IServiceCollection AddToDoListHost(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>,ToDoConsumer>(); 
+        services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>,ToDoConsumer>();
+
+        if (configuration["environment"] == "Test")
+            return services;
+        
         return services.AddMassTransit<IToDoListBus>(cfg =>
         {
             
