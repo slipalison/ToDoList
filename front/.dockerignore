@@ -1,0 +1,16 @@
+﻿# dependencies
+node_modules
+npm-debug.log
+
+# compiled output
+dist
+
+# local env files
+src/environments/environment.ts
+src/environments/environment.prod.ts
+
+# misc
+.git
+.gitignore
+.DS_Store
+Thumbs.db

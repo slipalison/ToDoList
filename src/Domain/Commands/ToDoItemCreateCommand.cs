@@ -12,7 +12,7 @@ public class ToDoItemCreateCommand
     {
         var list = new List<KeyValuePair<string, string>>(2);
 
-        if (Deadline.HasValue && Deadline.Value < DateTime.Now)
+        if (Deadline.HasValue && Deadline.Value < DateTime.Now.Date)
             list.Add(new KeyValuePair<string, string>("DeadLine",
                 "A data de termino não pode der menor que a data atual"));
 

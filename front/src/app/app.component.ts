@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   public form: FormGroup;
   tasks: Task[] = [];
   filterValue: string = 'All';
-
+  today = new Date();
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -30,15 +30,16 @@ export class AppComponent implements OnInit {
     this.listTodo();
   }
 
+  private url: string = 'http://localhost:8080'
   listTodo() {
-    var data = this.http.get<Task[]>('http://localhost:8080/ToDo');
+    var data = this.http.get<Task[]>(`${this.url}/ToDo`);
     data.subscribe((result: Task[]) => {
       this.tasks = result;
     });
   }
 
   addTodo(result: Task) {
-    var data = this.http.post('http://localhost:8080/ToDo', result);
+    var data = this.http.post(`${this.url}/ToDo`, result);
     data.subscribe((result: any) => {
       console.log("Adicionado a fila");
     });
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
   updateTodo(result: Task, status: string) {
 
     result.status = status;
-    var data = this.http.patch(`http://localhost:8080/ToDo/${result.id}`, result);
+    var data = this.http.patch(`${this.url}/ToDo/${result.id}`, result);
     data.subscribe((result: any) => {
       this.listTodo();
       console.log("Atualizado ", result);
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit {
 
 
   deleteTodo(result: Task) {
-    var data = this.http.delete(`http://localhost:8080/ToDo/${result.id}`);
+    var data = this.http.delete(`${this.url}/ToDo/${result.id}`);
 
     data.subscribe((result: any) => {
       this.listTodo();
