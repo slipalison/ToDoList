@@ -28,6 +28,7 @@ public abstract class ConsumerBaseTest<TMessage> : AbstractIntegratedTest where 
 
     protected ConsumerBaseTest(CustomWebApplicationFactory<Program> factory) : base(factory)
     {
+        // ReSharper disable once VirtualMemberCallInConstructor
         MockMessage();
     }
 

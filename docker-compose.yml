@@ -1,6 +1,7 @@
 version: '3.4'
 # docker-compose up -d --no-deps --build <service_name>
 services:
+
   webapi:
     #image: ${DOCKER_REGISTRY-}webapi
     build:
@@ -12,13 +13,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=ToDoList;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+      - Elastic=http://elasticsearch:9200
       - RabbitMq__hosts=["rabbit:5672"]
+      - ELASTICSEARCH_NODE_URIS=http://elasticsearch:9200
     depends_on:
      - sqlserver
      - elasticsearch
      - rabbit
-    #  - redis
-    #  - mongo
+    networks:
+      - testes-elastic
+
   front:
     build:
       context: ./front
@@ -36,19 +40,23 @@ services:
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
- 
-  
+    networks:
+      - testes-elastic 
 
   rabbit:
     image: rabbitmq:3.11.9-management
     ports:
       - "5672:5672"
       - "15672:15672"
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
+    networks:
+      - testes-elastic
+      
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"
 
+      
   # mongo:
   #   image: mongo
   #   restart: always

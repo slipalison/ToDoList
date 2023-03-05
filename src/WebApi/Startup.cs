@@ -63,15 +63,16 @@ public class Startup
         app.UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader());
-        app.UseMiddleware<CorrelationMiddleware>().UseMiddleware<LoggingMiddleware>();
-        app.UseSerilogRequestLogging();
+            .AllowAnyHeader())
+            .UseMiddleware<CorrelationMiddleware>()
+            .UseMiddleware<LoggingMiddleware>();
+        
         // TODO: Isso é só para testes e apresentação, hambiente produtivo isso é contra indicado
         app.ExecuteMigartions();
-
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseHttpsRedirection().UseRouting()
+        app//.UseHttpsRedirection()
+            .UseRouting()
             .UseResponseCompression()
             .UseEndpoints(endpoints =>
             {

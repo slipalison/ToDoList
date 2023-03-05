@@ -30,7 +30,6 @@ public abstract class AbstractIntegratedTest : IClassFixture<CustomWebApplicatio
 
     protected ICorrelationContextService CorrelationService { get; set; }
 
-    protected ITestHarness Harness { get; set; }
 
     protected IFlurlRequest CallHttp(string uri)
     {

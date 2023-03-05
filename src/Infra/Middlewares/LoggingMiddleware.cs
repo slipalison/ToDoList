@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
+using Serilog.Context;
 
 namespace Infra.Middlewares;
 
@@ -39,9 +40,12 @@ public class LoggingMiddleware
         context.Response.Body = responseBody;
         await _next(context);
         context.Response.Body.Seek(0, SeekOrigin.Begin);
+
+        using var t = LogContext.PushProperty("X-Correlation-ID", context.Request.Headers["X-Correlation-ID"]);
         _logger.LogInformation(
-            "Http Response Information | Schema:{RequestScheme} Host: {RequestHost} Path: {RequestPath} QueryString: {RequestQueryString} Headers: {Join}",
-            context.Request.Scheme, context.Request.Host, context.Request.Path, context.Request.QueryString,
+            "Http Response Information | Schema:{RequestScheme} Method:{Method} Host:{RequestHost} Path:{RequestPath} QueryString: {RequestQueryString} Headers:{Join}",
+            context.Request.Scheme, context.Request.Host, context.Request.Method, context.Request.Path,
+            context.Request.QueryString,
             string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")));
         await responseBody.CopyToAsync(originalBodyStream);
     }
@@ -52,7 +56,8 @@ public class LoggingMiddleware
         await using var requestStream = _recyclableMemoryStreamManager.GetStream();
         await context.Request.Body.CopyToAsync(requestStream);
         var log =
-            $"Http Request Information | Schema:{context.Request.Scheme} Host: {context.Request.Host} Path: {context.Request.Path} QueryString: {context.Request.QueryString}";
+            $"Http Request Information | Schema:{context.Request.Scheme} Method:{context.Request.Method} Host: {context.Request.Host} Path: {context.Request.Path} QueryString: {context.Request.QueryString}";
+        using var t = LogContext.PushProperty("X-Correlation-ID", context.Request.Headers["X-Correlation-ID"]);
         _logger.LogInformation(log);
         context.Request.Body.Position = 0;
     }

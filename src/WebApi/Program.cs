@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
 
 namespace WebApi;
@@ -19,11 +21,13 @@ public class Program
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
             .UseSerilog((context, configuration) =>
             {
-                configuration.Enrich.FromLogContext()
+                configuration
+                    .MinimumLevel.Verbose()
+                    .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
                     .WriteTo.Debug()
-                    .WriteTo.Console()
-                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                    .WriteTo.Console(new JsonFormatter())
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["Elastic"]!))
                     {
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,

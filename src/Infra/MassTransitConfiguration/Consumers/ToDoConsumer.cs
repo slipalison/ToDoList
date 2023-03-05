@@ -10,10 +10,10 @@ public class ToDoConsumer : IConsumer<ToDoItemQueueCreateCommand>
     private readonly IToDoListService _toDoListService;
     private readonly ILogger<ToDoConsumer> _logger;
 
-    public ToDoConsumer(ILogger<ToDoConsumer> logger, IToDoListService toDoListService)
+    public ToDoConsumer(ILoggerFactory factory, IToDoListService toDoListService)
     {
         _toDoListService = toDoListService;
-        _logger = logger;
+        _logger = factory.CreateLogger<ToDoConsumer>();
     }
 
     public async Task Consume(ConsumeContext<ToDoItemQueueCreateCommand> context)

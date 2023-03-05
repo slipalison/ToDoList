@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using MassTransit;
 using MassTransit.Serialization;
-using Microsoft.Extensions.Logging;
 
 namespace Infra.MassTransitConfiguration.Consumers;
 [ExcludeFromCodeCoverage]
@@ -11,16 +10,16 @@ public abstract class BaseConsumerDefinition<TConsumer> : ConsumerDefinition<TCo
     private readonly string _exchange;
     private readonly string _routingKey;
     private readonly string _exchangeType;
-    private readonly ApplicatrionJsonTypeDeserialize _serialize;
 
-    protected BaseConsumerDefinition(ILogger logger, string exchange, string routingKey, string endipoint,
+    protected BaseConsumerDefinition(string exchange, string routingKey, string endipoint,
         string exchangeType = RabbitMQ.Client.ExchangeType.Direct)
     {
         _exchange = exchange;
         _routingKey = routingKey;
         EndpointName = endipoint;
         _exchangeType = exchangeType;
-        _serialize = new ApplicatrionJsonTypeDeserialize(logger);
+    
+        
 
         Endpoint(x =>
         {
@@ -62,7 +61,5 @@ public abstract class BaseConsumerDefinition<TConsumer> : ConsumerDefinition<TCo
     private void ConfigureDeserializer(IRabbitMqReceiveEndpointConfigurator rmq)
     {
         rmq.UseRawJsonSerializer(RawSerializerOptions.All);
-        rmq.AddDeserializer(_serialize);
-        rmq.AddSerializer(_serialize);
     }
 }

@@ -56,7 +56,7 @@ public static class MasstransitExtension
         var hosts =
             JsonSerializer.Deserialize<List<string>>(configuration.GetSection("RabbitMq:hosts").Value!);
 
-        var maimHost = hosts.First().Split(":");
+        var maimHost = hosts!.First().Split(":");
 
 
         cfg.Host(maimHost[0], ushort.Parse(maimHost[1]), "/", (hostCongig) =>
@@ -64,7 +64,7 @@ public static class MasstransitExtension
             hostCongig.Username(user);
             hostCongig.Password(pass);
             hostCongig.PublisherConfirmation = true;
-            hostCongig.UseCluster(c => hosts.ForEach(c.Node));
+            hostCongig.UseCluster(c => hosts!.ForEach(c.Node));
         });
     }
 }
