@@ -31,4 +31,4 @@ Projeto com prazo de 1 semana:
 3. Avaliação final com base na entrevista e entrega do projeto.
 
 ## Cobertura Sunburst
-![Grid](https://codecov.io/gh/slipalison/ToDoList/branch/main/graphs/sunburst.svg?token=oEv1sNpdD0)
+![Grid](https://codecov.io/gh/slipalison/ToDoList/branch/main/graphs/sunburst.svg?token=yxTtfDM1em)
