@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Domain.Commands;
 using Domain.Contracts.Services;
 using Infra.MassTransitConfiguration.Consumers;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.MassTransitConfiguration;
 
+[ExcludeFromCodeCoverage]
 public static class MasstransitExtension
 {
     public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services,

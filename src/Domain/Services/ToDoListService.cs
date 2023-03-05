@@ -40,7 +40,7 @@ public class ToDoListService : IToDoListService
             ToDoItemQueueCreateCommand.Create(createCommand, _correlationContextService.GetCorrelationId()));
     }
 
-    public async Task<Result> Update(Guid id, UpdateCommad updateCommad, CancellationToken cancellationToken)
+    public async Task<Result<ToDoItemEntity>> Update(Guid id, UpdateCommad updateCommad, CancellationToken cancellationToken)
     {
         var enti = ToDoItemEntity.Update(updateCommad, id);
         var result = await _toDoListRepository.Update(enti, cancellationToken);

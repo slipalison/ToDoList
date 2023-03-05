@@ -26,7 +26,7 @@ public class ToDoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ToDoItemCreateCommand createCommand,
+    public async Task<ActionResult<ToDoItemEntity>> Create([FromBody] ToDoItemCreateCommand createCommand,
         CancellationToken cancellationToken = default)
     {
         if (!createCommand.Validate().IsSuccess)
@@ -49,7 +49,7 @@ public class ToDoController : ControllerBase
     }
 
     [HttpPatch("{id:Guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCommad updateCommad,
+    public async Task<ActionResult<ToDoItemEntity>> Update([FromRoute] Guid id, [FromBody] UpdateCommad updateCommad,
         CancellationToken cancellationToken = default)
     {
         if (!updateCommad.Validate().IsSuccess)
@@ -57,7 +57,7 @@ public class ToDoController : ControllerBase
 
         var result = await _toDoListService.Update(id, updateCommad, cancellationToken);
         if (result.IsSuccess)
-            return Ok();
+            return Ok(result.Value);
         _logger.LogInformation("Registor atulalizado");
         return BadRequest(result.Error);
     }

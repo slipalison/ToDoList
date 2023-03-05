@@ -28,13 +28,13 @@ public class ToDoListRepository : IToDoListRepository
         return ent.Entity;
     }
 
-    public async Task<Result> Update(ToDoItemEntity entity, CancellationToken cancellationToken = default)
+    public async Task<Result<ToDoItemEntity>> Update(ToDoItemEntity entity, CancellationToken cancellationToken = default)
     {
         var entitie =
             await _context.ToDos.FindAsync(new object?[] { entity.Id },
                 cancellationToken: cancellationToken);
 
-        if (entitie == null) return Result.Fail("404", "Tarefa não encontrada");
+        if (entitie == null) return Result.Fail<ToDoItemEntity>("404", "Tarefa não encontrada");
 
         entitie.Deadline = entity.Deadline;
         entitie.Name = entity.Name;
@@ -43,7 +43,7 @@ public class ToDoListRepository : IToDoListRepository
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Result.Ok();
+        return Result.Ok(entitie);
     }
 
     public async Task<Result> Delete(Guid id, CancellationToken cancellationToken = default)

@@ -1,9 +1,11 @@
-﻿using Domain.Contracts.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Contracts.Services;
 using MassTransit;
 using MassTransit.Transports.Fabric;
 
 namespace Infra.MassTransitConfiguration.Publishers;
 
+[ExcludeFromCodeCoverage]
 public static class AddPublisherExtensions
 {
     private static readonly Dictionary<ExchangeType, string> ExchangeTypes = new()
