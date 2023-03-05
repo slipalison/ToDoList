@@ -7,7 +7,7 @@
 ## Como funciona❓❔❓
 Aplicação para demonstração de aplicação asp.net com .net core 6.0.  
 Na solução você encontrar divisão de camadas respeitando o DDD, para projeto simples.  
-Para subir a aplicação basta executar o comando a baixo na pasta raiz do projeto, e acessar http://localhost:8080/swagger no seu navegador.  
+Para subir a aplicação basta executar o comando a baixo na pasta raiz do projeto, e acessar http://localhost:8080/swagger no seu navegador, ou para acessar o front end http://localhost:8081.  
 
 ``` docker-compose up --build``` 
 
