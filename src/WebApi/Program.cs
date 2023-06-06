@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using Serilog;
-using Serilog.Events;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
 

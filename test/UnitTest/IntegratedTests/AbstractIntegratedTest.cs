@@ -1,7 +1,6 @@
 ﻿using Domain.Services;
 using Flurl.Http;
 using Infra.MassTransitConfiguration;
-using MassTransit.Testing;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi;

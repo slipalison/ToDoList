@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     this.listTodo();
   }
 
-  private url: string = 'http://localhost:8080'
+  private url: string = 'http://localhost:8082'
   listTodo() {
     var data = this.http.get<Task[]>(`${this.url}/ToDo`);
     data.subscribe((result: Task[]) => {
@@ -66,10 +66,10 @@ export class AppComponent implements OnInit {
   }
 
   filterList() {
-    if(this.filterValue == 'All')
-    return this.tasks
+    if (this.filterValue == 'All')
+      return this.tasks
     else
-    return this.tasks.filter(x=> x.status == this.filterValue)
+      return this.tasks.filter(x => x.status == this.filterValue)
   }
 
   addTask() {
@@ -81,11 +81,14 @@ export class AppComponent implements OnInit {
     let task: ITask = new Task();
     task.name = name.value;
 
-    if (deadline.value != null && deadline.value != '')
-      task.deadline = deadline.value
+    if (deadline.value != null && deadline.value != '') {
+      let data = new Date(deadline.value.toString() + ':00z');
+      task.deadline = data;
+    }
 
 
-    var data = this.http.post('http://localhost:8080/ToDo', task);
+
+    var data = this.http.post(`${this.url}/ToDo`, task);
     data.subscribe((result: any) => {
       this.listTodo();
       this.form.reset();

@@ -4,7 +4,8 @@
     <input type="text" formControlName="name" class="form-control"
       [ngClass]="{'is-invalid':  ((form.controls['name'].value !==null &&form.controls['name'].value !=='') && !form.valid)   }"
       id="name" (keyup.enter)="addTask()" placeholder="Nome da Tarefa" />
-    <input type="date" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()"  min="{{ today | date:'yyyy-MM-dd' }}"/>
+    <input type="datetime-local" class="form-control" formControlName="deadline" id="deadline" (keyup.enter)="addTask()"
+      min="{{ today | date:'yyyy-MM-ddT00:00:00' }}" />
 
     <button class="btn btn-outline-info text-primary" type="button" id="button-addon2" name="add"
       (click)="addTask()">Adicionar</button>
@@ -47,7 +48,7 @@
     <tbody>
       <tr *ngFor="let task of filterList()">
         <td class="col-sm-5">{{ task.name }} <i class="bi bi-pencil-square"></i></td>
-        <td class="col-sm-1">{{ task.deadline | date:'dd/MM/yyyy' }} <i class="bi bi-pencil-square"></i></td>
+        <td class="col-sm-2">{{ task.deadline | date:'dd/MM/yyyy hh:mm' }} <i class="bi bi-pencil-square"></i></td>
         <td class="col-sm-1">
           <a class="pointer hiden">💾</a>
           <a class="pointer hiden">📝</a>
